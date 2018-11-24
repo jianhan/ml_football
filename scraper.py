@@ -34,4 +34,5 @@ class Scraper:
             dfLower = df.apply(lambda x: x.astype(str).str.lower())
             dfLower.columns = map(str.lower, dfLower.columns)
             dfLower.to_csv(path, index=False)
-            print('SUCCESSFUL')
+            if (len(dfLower.columns) < 40):
+                os.remove(path)
