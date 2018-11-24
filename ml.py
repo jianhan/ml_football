@@ -10,6 +10,7 @@ class ML:
 
     def pipeline(self):
         # rename columns
+        self.__wrangling()
         self.__description()
 
     def __description(self):
@@ -28,10 +29,12 @@ class ML:
         for c in self.df.columns.values:
             columns_table_rows.append([c, self.df.dtypes[c].name, df_length - self.df[c].count()])
         columns_table = AsciiTable(columns_table_rows)
+        print(columns_table.table)
 
     def __wrangling(self):
-        pass
-    
+        # type casting
+        self.df['date'] = pd.to_datetime(self.df.date)
+
     def __visualization(self):
         pass
     
