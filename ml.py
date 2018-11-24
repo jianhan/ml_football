@@ -15,13 +15,6 @@ class ML:
 
     def __description(self):
         df_length = len(self.df)
-        print(0.8 * df_length)
-        pass
-        for c in self.df.columns.values:
-            if df_length - self.df[c].count() > 0.5 * df_length:
-                # if the number of missing value is over 50%, then there is no point to leave
-                # this column in dataset
-                self.df.drop([c],axis=1,inplace=True)
 
         # table summary
         summary_table_data = [
@@ -34,38 +27,37 @@ class ML:
         # columns summary
         columns_table_rows = [['column', 'type', 'missing values']]
         for c in self.df.columns.values:
-            columns_table_rows.append([c, self.df.dtypes[c].name, df_length - self.df[c].count()])
-        
+            columns_table_rows.append(
+                [c, self.df.dtypes[c].name, df_length - self.df[c].count()])
+
         columns_table = AsciiTable(columns_table_rows)
         print(columns_table.table)
 
     def __wrangling(self):
+        df_length = len(self.df)
+        # manually drop columns we do not need
+        self.df.drop(
+            [
+                'stan_james_away_win_odds',
+                'stan_james_draw_odds',
+                'stan_james_home_win_odds',
+
+                'sportingbet_away_win_odds',
+                'sportingbet_draw_odds',
+                'sportingbet_home_win_odds',
+            ],
+            axis=1,
+            inplace=True)
+
+        # drop any column with missing data more than 50%
+        for c in self.df.columns.values:
+            if df_length - self.df[c].count() > 0.5 * df_length:
+                # if the number of missing value is over 50%, then there is no point to leave
+                # this column in dataset
+                self.df.drop([c], axis=1, inplace=True)
+    
         # type casting
         self.df['date'] = pd.to_datetime(self.df.date)
-
-        # self.df.drop(
-        #     [
-        #         'away_team_bookings_points_10_yellow_25_red',
-        #         'away_team_hit_woodwork',
-        #         'away_team_offsides',
-        #         'crowd_attendance',
-        #         'bet365_under_2_5_goals',
-
-        #         'bet365_over_2_5_goals',
-
-        #         'bet365_away_win_odds',
-        #         'bet365_size_of_handicap_home_team',
-        #         'bet365_asian_handicap_away_team_odds',
-        #         'bet365_asian_handicap_home_team_odds',
-        #         'bet365_draw_odds',
-
-        #         'blue_square_away_win_odds',
-        #         'blue_square_draw_odds',
-        #         'blue_square_home_win_odds',
-        #         ],
-        #     axis=1,
-        #     inplace=True)
-        
 
     def __visualization(self):
         pass
