@@ -38,6 +38,7 @@ class Scraper:
                 os.remove(path)
 
     def concactCSVs(self):
+        os.remove(self.csvDir+'/concacted.csv')
         df = None
         for path in glob.glob(self.csvDir+'/*.csv'):
             if df is None:

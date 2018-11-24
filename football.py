@@ -2,6 +2,6 @@ import scraper
 
 s = scraper.Scraper()
 
-# s.scrape()
-# s.combineCSVs()
+s.scrape()
+s.combineCSVs()
 s.concactCSVs()
