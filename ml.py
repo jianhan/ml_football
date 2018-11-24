@@ -1,43 +1,62 @@
 import pandas as pd
+from terminaltables import AsciiTable
+
 
 class ML:
 
     def __init__(self):
-        self.df = pd.read_csv('epl_csvs/concacted.csv', engine='python', error_bad_lines=False)
+        self.df = pd.read_csv('epl_csvs/concacted.csv',
+                              engine='python', error_bad_lines=False)
 
     def pipeline(self):
         # rename columns
-        self.df = cleanup_column_names(self.df, {})
-        self.__wrangling()
-    
+        self.__description()
+
+    def __description(self):
+        df_length = len(self.df)
+
+        # table summary
+        summary_table_data = [
+            ['rows', 'columns'],
+            [self.df.shape[0], self.df.shape[1]],
+        ]
+        summary_table = AsciiTable(summary_table_data)
+        print(summary_table.table)
+
+        # columns summary
+        columns_table_rows = [['column', 'type', 'missing values']]
+        for c in self.df.columns.values:
+            columns_table_rows.append([c, self.df.dtypes[c].name, df_length - self.df[c].count()])
+        columns_table = AsciiTable(columns_table_rows)
+
     def __wrangling(self):
-        print(123)
+        pass
     
     def __visualization(self):
         pass
     
-    def __featureEngineering(self):
+    def __feature_engineering(self):
         pass
 
-    def __featureScaling(self):
+    def __feature_scaling(self):
         pass
 
-    def __featureSelection(self):
+    def __feature_selection(self):
         pass
 
     def __modeling(self):
         pass
     
-    def __modelEvaluation(self):
+    def __model_evaluation(self):
         pass
     
     def __modelTuning(self):
         pass
 
-    def __modelInterpretation(self):
+    def __model_interpretation(self):
         pass
 
-    def __modelDeployment(self):
+    def __model_deployment(self):
         pass
 
 def cleanup_column_names(df,rename_dict={},do_inplace=True):

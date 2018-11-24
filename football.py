@@ -5,7 +5,7 @@ s = scraper.Scraper()
 
 # s.scrape()
 # s.combineCSVs()
-s.concactCSVs()
+# s.concactCSVs()
 
-# ml = ml.ML()
-# ml.pipeline()
+ml = ml.ML()
+ml.pipeline()
