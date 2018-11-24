@@ -7,6 +7,7 @@ import shutil
 import pandas as pd
 import glob
 
+
 class Scraper:
 
     def __init__(self):
@@ -26,13 +27,22 @@ class Scraper:
             wget.download(self.host +
                           link.get('href'), self.csvDir+'/'+str(i)+'_'+'EPL.csv')
             i = i + 1
-    
+
     def combineCSVs(self):
         for path in glob.glob(self.csvDir+'/*.csv'):
-            print(path)
             df = pd.read_csv(path, engine='python', error_bad_lines=False)
             dfLower = df.apply(lambda x: x.astype(str).str.lower())
             dfLower.columns = map(str.lower, dfLower.columns)
             dfLower.to_csv(path, index=False)
             if (len(dfLower.columns) < 40):
                 os.remove(path)
+
+    def concactCSVs(self):
+        df = None
+        for path in glob.glob(self.csvDir+'/*.csv'):
+            if df is None:
+                df = pd.read_csv(path, engine='python', error_bad_lines=False)
+            else:
+                tmpDF = pd.read_csv(path, engine='python', error_bad_lines=False)
+                df = pd.concat([df, tmpDF], ignore_index=True)
+        df.to_csv(self.csvDir+'/concacted.csv', index=False)
