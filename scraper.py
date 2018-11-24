@@ -38,12 +38,52 @@ class Scraper:
                 os.remove(path)
 
     def concactCSVs(self):
-        os.remove(self.csvDir+'/concacted.csv')
+        if os.path.exists(self.csvDir+'/concacted.csv'):
+            os.remove(self.csvDir+'/concacted.csv')
         df = None
         for path in glob.glob(self.csvDir+'/*.csv'):
             if df is None:
                 df = pd.read_csv(path, engine='python', error_bad_lines=False)
             else:
-                tmpDF = pd.read_csv(path, engine='python', error_bad_lines=False)
+                tmpDF = pd.read_csv(path, engine='python',
+                                    error_bad_lines=False)
                 df = pd.concat([df, tmpDF], ignore_index=True)
+
+        # rename columns
+        columnsMap = {
+            "abp": "away_team_bookings_points",
+            "ac": "away_team_corners",
+            "af": "away_team_fouls_committed",
+            "fthg": "full_time_home_team_goals",
+            "hg": "home_team_goals",
+            "ftag": "full_time_away_team_goals",
+            "ag": "away_team_goals",
+            "ftr": "full_time_result",
+            "hthg": "half_time_home_team_goals",
+            "htag": "half_time_away_team_goals",
+            "htr": "half_time_result",
+            "attendance": "crowd_attendance",
+            "referee": "match_referee",
+            "hs": "home_team_shots",
+            "as": "away_team_shots",
+            "hst": "home_team_shots_on_target",
+            "ast": "away_team_shots_on_target",
+            "hhw": "home_team_hit_woodwork",
+            "ahw": "away_team_hit_woodwork",
+            "hbp": "home_team_bookings_points_10_yellow_25_red",
+            "abp": "away_team_bookings_points_10_yellow_25_red",
+            "hfkc": "home_team_free_kicks_conceded",
+            "afkc": "away_team_free_kicks_conceded",
+            "hc": "home_team_corners",
+            "ac": "away_team_corners",
+            "hf": "home_team_fouls_committed",
+            "af": "away_team_fouls_committed",
+            "ho": "home_team_offsides",
+            "ao": "away_team_offsides",
+            "hy": "home_team_yellow_cards",
+            "ay": "away_team_yellow_cards",
+            "hr": "home_team_red_cards",
+            "ar": "away_team_red_cards",
+        }
+        df.rename(index=str, columns=columnsMap, inplace=True)
         df.to_csv(self.csvDir+'/concacted.csv', index=False)
