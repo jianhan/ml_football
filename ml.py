@@ -45,19 +45,32 @@ class ML:
                 'sportingbet_away_win_odds',
                 'sportingbet_draw_odds',
                 'sportingbet_home_win_odds',
+
+                'gamebookers_away_win_odds',
+                'gamebookers_draw_odds',
+                'gamebookers_home_win_odds',
+
+                'vc_bet_away_win_odds',
+                'vc_bet_draw_odds',
+                'vc_bet_home_win_odds',
+
+                'bet_win_away_win_odds',
+                'bet_win_draw_odds',
+                'bet_win_home_win_odds',
             ],
             axis=1,
             inplace=True)
 
         # drop any column with missing data more than 50%
         for c in self.df.columns.values:
-            if df_length - self.df[c].count() > 0.5 * df_length:
-                # if the number of missing value is over 50%, then there is no point to leave
+            if df_length - self.df[c].count() > 0.25 * df_length:
+                # if the number of missing value is over 25%, then there is no point to leave
                 # this column in dataset
                 self.df.drop([c], axis=1, inplace=True)
     
         # type casting
         self.df['date'] = pd.to_datetime(self.df.date)
+        self.df.dropna(inplace=True)
 
     def __visualization(self):
         pass
