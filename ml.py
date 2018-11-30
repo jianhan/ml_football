@@ -1,6 +1,7 @@
 import pandas as pd
 from terminaltables import AsciiTable
-
+import matplotlib.pyplot as plt
+import numpy as np
 
 class ML:
 
@@ -12,6 +13,7 @@ class ML:
         # rename columns
         self.__wrangling()
         self.__description()
+        self.__visualization()
 
     def __description(self):
         df_length = len(self.df)
@@ -32,6 +34,12 @@ class ML:
 
         columns_table = AsciiTable(columns_table_rows)
         print(columns_table.table)
+        
+        print("General Stats::")
+        print(self.df.info())
+        print("Summary Stats::" )
+        print(self.df.describe())
+        print(self.df.head(10))
 
     def __wrangling(self):
         df_length = len(self.df)
@@ -85,13 +93,16 @@ class ML:
                 # if the number of missing value is over 25%, then there is no point to leave
                 # this column in dataset
                 self.df.drop([c], axis=1, inplace=True)
-    
+
         # type casting
         self.df['date'] = pd.to_datetime(self.df.date)
         self.df.dropna(inplace=True)
 
     def __visualization(self):
-        pass
+        self.df[['bet365_away_win_odds', 'bet365_draw_odds', 'bet365_home_win_odds']
+                ].hist(figsize=(12, 4))
+
+        plt.show()
 
     def __feature_engineering(self):
         pass
